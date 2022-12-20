@@ -123,7 +123,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
-  spawnOnce "compton"
+  spawnOnce "picom --config ~/.config/picom/picom.conf &"
   spawnOnce "~/.fehbg &"  -- set last saved feh wallpaper
   setWMName "xmonad"
   setDefaultCursor xC_left_ptr
@@ -260,7 +260,7 @@ myManageHook = composeAll
   , className =? "Gimp"            --> doShift ( myWorkspaces !! 8 )
   , className =? "Lutris"          --> doShift ( myWorkspaces !! 4 )
   , className =? "Runescape"       --> doShift ( myWorkspaces !! 4 )
-  , className =? "Discord"         --> doShift ( myWorkspaces !! 5 )
+  , className =? "discord"         --> doShift ( myWorkspaces !! 5 )
   , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
   , isFullscreen -->  doFullFloat
   ] <+> namedScratchpadManageHook myScratchPads
@@ -424,9 +424,10 @@ main = do
         { ppOutput = \x -> hPutStrLn xmproc0 x   -- xmobar on monitor 1
                         -- >> hPutStrLn xmproc1 x   -- xmobar on monitor 2
                         -- >> hPutStrLn xmproc2 x   -- xmobar on monitor 3
-        , ppCurrent = xmobarColor  "#ffffff" "" . clickable
+          -- Current workspace
+        , ppCurrent = xmobarColor  "#ffffff" ""
           -- Visible but not current workspace
-        , ppVisible = xmobarColor "#585858" "" . clickable
+        , ppVisible = xmobarColor "#585858" ""
           -- Hidden workspace
         , ppHidden = xmobarColor "#666666" "" . clickable
           -- Hidden workspaces (no windows)

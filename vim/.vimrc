@@ -20,7 +20,7 @@
 "
 set nocompatible
 
-colorscheme desert
+colorscheme slate
 
 set number relativenumber
 
