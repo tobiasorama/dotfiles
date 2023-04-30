@@ -20,7 +20,7 @@
 "
 set nocompatible
 
-colorscheme slate
+set term=xterm-256color
 
 set number relativenumber
 
@@ -32,6 +32,10 @@ set path+=**
 
 set wildmode=full
 set wildmenu
+
+set ic
+set hlsearch
+nnoremap <Cr> :set hlsearch! hlsearch?<Cr>
 
 set encoding=utf-8
 
@@ -65,6 +69,7 @@ nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 nnoremap n nzz
 nnoremap N Nzz
+
 """ config for ctrlP
 
 let g:ctrlp_show_hidden=1
@@ -79,14 +84,7 @@ endif
 
 nnoremap <Leader>g :GitGutterDiffOrig<Cr><C-w>h
 
-""" config for ale
-"nmap <Leader>d <Plug>(ale_go_to_definition)
-"nmap <Leader>r <Plug>(ale_find_references)
-
-highlight GitGutterAdd     ctermbg=black ctermfg=green
-highlight GitGutterChange  ctermbg=black ctermfg=yellow
-highlight GitGutterDelete  ctermbg=black ctermfg=red
-highlight! link SignColumn LineNr
+highlight! link SignColumn NonText
 
 """ config for coc
 
@@ -252,5 +250,6 @@ call plug#begin()
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'rhysd/vim-clang-format'
+    Plug 'christoomey/vim-tmux-navigator'
+    Plug 'vim-airline/vim-airline'
 call plug#end()
-

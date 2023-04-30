@@ -91,6 +91,13 @@ import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Cursor
 
+  -- Theme
+import SakuraNight
+import MyModules.Themes (VisualTheme (..))
+
+myTheme :: VisualTheme
+myTheme = SakuraNight.newTheme
+
 myFont :: String
 myFont = "xft:Cascadia Code Mono:regular:size=10:antialias=true:hinting=true"
 
@@ -98,10 +105,12 @@ myModMask :: KeyMask
 myModMask = mod4Mask        -- Sets modkey to super/windows key
 
 myTerminal :: String
-myTerminal = "alacritty"    -- Sets default terminal
+myTerminal = "kitty"    -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "firefox "  -- Sets firefox as browser
+myBrowser = "qutebrowser"
+myFileExplorer :: String
+myFileExplorer = "nemo"
 
 myEditor :: String
 myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
@@ -110,10 +119,12 @@ myBorderWidth :: Dimension
 myBorderWidth = 2           -- Sets border width for windows
 
 myNormColor :: String       -- Border color of normal windows
-myNormColor   = "#000000" 
+myNormColor =  fst $ black myTheme -- fst $ black myTheme
+-- myNormColor   = "#000000" 
 
 myFocusColor :: String      -- Border color of focused windows
-myFocusColor  = "#910053" 
+myFocusColor = snd $ blue myTheme
+-- myFocusColor  = "#910053" 
 
 mySoundPlayer :: String
 mySoundPlayer = "ffplay -nodisp -autoexit " -- The program that will play system sounds
@@ -123,7 +134,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
-  spawnOnce "picom --config ~/.config/picom/picom.conf &"
+  spawn "picom --config ~/.config/picom/picom.conf &"
   spawnOnce "~/.fehbg &"  -- set last saved feh wallpaper
   setWMName "xmonad"
   setDefaultCursor xC_left_ptr
@@ -200,14 +211,6 @@ myTabTheme = def { fontName            = myFont
                  , inactiveTextColor   = "#666666"
                  }
 
--- Theme for showWName which prints current workspace when you change workspaces.
-myShowWNameTheme :: SWNConfig
-myShowWNameTheme = def
-  { swn_font              = "xft:Ubuntu:bold:size=60"
-  , swn_fade              = 1.0
-  , swn_bgcolor           = "#1c1f24"
-  , swn_color             = "#ffffff"
-  }
 
 -- The layout hook
 myLayoutHook = avoidStruts
@@ -221,18 +224,18 @@ myLayoutHook = avoidStruts
                                            ||| grid
 
 -- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
-myWorkspaces = [" dev ", " www ", " sys ", " doc ", " games ", " chat ", " mus ", " vid ", " gfx "]
--- myWorkspaces =
---         " 1 : <fn=2>\xf111</fn> " :
---         " 2 : <fn=2>\xf1db</fn> " :
---         " 3 : <fn=2>\xf192</fn> " :
---         " 4 : <fn=2>\xf025</fn> " :
---         " 5 : <fn=2>\xf03d</fn> " :
---         " 6 : <fn=2>\xf1e3</fn> " :
---         " 7 : <fn=2>\xf07b</fn> " :
---         " 8 : <fn=2>\xf21b</fn> " :
---         " 9 : <fn=2>\xf21e</fn> " :
---         []
+-- myWorkspaces = [" dev ", " www ", " sys ", " doc ", " games ", " chat ", " mus ", " vid ", " gfx "]
+myWorkspaces =
+        "  <fn=2>\xe795</fn>  " :
+        "  <fn=2>\xf059f</fn>  " :
+        "  <fn=2>\xf303</fn>  " :
+        "  <fn=2>\xf718</fn>  " :
+        "  <fn=2>\xf11b</fn>  " :
+        "  <fn=2>\xf066f</fn>  " :
+        "  <fn=2>\xf001</fn>  " :
+        "  <fn=2>\xeb39</fn>  " :
+        "  <fn=2>\xf03e</fn>  " :
+        []
 myWorkspaceIndices = M.fromList $ zip myWorkspaces [1..]
 
 clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
@@ -244,24 +247,28 @@ myManageHook = composeAll
   -- using 'doShift ( myWorkspaces !! 7)' sends program to workspace 8!
   -- I'm doing it this way because otherwise I would have to write out the full
   -- name of my workspaces and the names would be very long if using clickable workspaces.
-  [ className =? "confirm"         --> doFloat
-  , className =? "file_progress"   --> doFloat
-  , className =? "dialog"          --> doFloat
+  [ className =? "confirm"         --> doCenterFloat
+  , className =? "file_progress"   --> doCenterFloat
+  , className =? "dialog"          --> doCenterFloat
   , className =? "download"        --> doFloat
   , className =? "error"           --> doFloat
   , className =? "Gimp"            --> doFloat
+  , className =? "Yad"             --> doFloat
   , className =? "notification"    --> doFloat
   , className =? "pinentry-gtk-2"  --> doFloat
   , className =? "splash"          --> doFloat
   , className =? "toolbar"         --> doFloat
-  , className =? "Yad"             --> doCenterFloat
   , title =? "Mozilla Firefox"     --> doShift ( myWorkspaces !! 1 )
+  , className =? "qutebrowser"     --> doShift ( myWorkspaces !! 1 )
   , className =? "mpv"             --> doShift ( myWorkspaces !! 7 )
   , className =? "Gimp"            --> doShift ( myWorkspaces !! 8 )
   , className =? "Lutris"          --> doShift ( myWorkspaces !! 4 )
   , className =? "Runescape"       --> doShift ( myWorkspaces !! 4 )
+  , className =? "Steam"           --> doShift ( myWorkspaces !! 4 )
   , className =? "discord"         --> doShift ( myWorkspaces !! 5 )
-  , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
+  , className =? "Qemu-system-x86_64"            --> doCenterFloat
+  , stringProperty "WM_WINDOW_ROLE" =? "GtkFileChooserDialog" --> doCenterFloat
+  , (className =? "firefox" <&&> resource =? "Dialog") --> doCenterFloat  -- Float Firefox Dialog
   , isFullscreen -->  doFullFloat
   ] <+> namedScratchpadManageHook myScratchPads
 
@@ -273,7 +280,7 @@ subtitle' x = ((0,0), NamedAction $ map toUpper
 
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
 showKeybindings x = addName "Show Keybindings" $ io $ do
-  h <- spawnPipe "yad --text-info --fontname=\"Cascadia Code Mono 12\" --fore=#46d9ff back=#282c36 --center --geometry=1200x800 --title \"XMonad keybindings\""
+  h <- spawnPipe "yad --text-info --fontname=\"Cascadia Code Mono 14\" --fore=white --back=black --center --geometry=1200x800 --title \"XMonad keybindings\" --no-buttons"
   --hPutStr h (unlines $ showKm x) -- showKM adds ">>" before subtitles
   hPutStr h (unlines $ showKmSimple x) -- showKmSimple doesn't add ">>" to subtitles
   hClose h
@@ -331,6 +338,7 @@ myKeys c =
   , ("M-b", addName "Launch web browser"       $ spawn myBrowser)
   , ("M-M1-h", addName "Launch htop"           $ spawn (myTerminal ++ " -e htop"))
   , ("M-p", addName "Launch DMenu"             $ spawn "dmenu_run")
+  , ("M-n", addName "Launch file explorer"     $ spawn myFileExplorer)
   ]
 
   ^++^ subKeys "Power options"
@@ -386,8 +394,7 @@ myKeys c =
   -- Toggle show/hide these programs. They run on a hidden workspace.
   -- When you toggle them to show, it brings them to current workspace.
   -- Toggle them to hide and it sends them back to hidden workspace (NSP).
-  ^++^ subKeys "Scratchpads"
-  [ ("M-s t", addName "Toggle scratchpad editor"   $ namedScratchpadAction myScratchPads "scratchpad")
+  ^++^ subKeys "Scratchpads" [ ("M-s t", addName "Toggle scratchpad editor"   $ namedScratchpadAction myScratchPads "scratchpad")
   , ("M-s c", addName "Toggle scratchpad calculator" $ namedScratchpadAction myScratchPads "calculator")]
 
   -- Multimedia Keys
@@ -402,20 +409,71 @@ myKeys c =
     where nonNSP          = WSIs (return (\ws -> W.tag ws /= "NSP"))
           nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "NSP"))
 
+-- colourscheme
+currentWs :: String
+currentWs = snd $ cyan myTheme
+-- currentWs = "#ffffff"
+
+visibleWsNotCurrent :: String
+visibleWsNotCurrent = snd $ white myTheme
+--visibleWsNotCurrent = "#585858"
+
+hiddenWsNotVisible :: String
+hiddenWsNotVisible = fst $ cyan myTheme
+--hiddenWsNotVisible = "#666666"
+
+hiddenWsNoWindows :: String
+hiddenWsNoWindows = fst $ black myTheme
+--hiddenWsNoWindows = "#333333"
+
+wsTitle :: String
+wsTitle = fst $ white myTheme
+--wsTitle = "#ffffff"
+
+wsSep :: String
+wsSep = fst $ magenta myTheme
+--wsSep = "#a9467f"
+
+urgentWs ::String
+urgentWs = fst $ red myTheme
+--urgentWs = "#cc0000"
+
+-- colourscheme 2
+-- currentWs :: String
+-- currentWs = "#02ffeb"
+-- 
+-- visibleWsNotCurrent :: String
+-- visibleWsNotCurrent = "#c0fffa"
+-- 
+-- hiddenWsNotVisible :: String
+-- hiddenWsNotVisible = "#c0fffa"
+-- 
+-- hiddenWsNoWindows :: String
+-- hiddenWsNoWindows = "#008f84"
+-- 
+-- wsTitle :: String
+-- wsTitle = "#02ffeb"
+-- 
+-- wsSep :: String
+-- wsSep = "#02ffeb"
+-- 
+-- urgentWs ::String
+-- urgentWs = "#cc0000"
+
 main :: IO ()
 main = do
   -- Launching three instances of xmobar on their monitors.
   xmproc0 <- spawnPipe "xmobar"
---   xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.config/xmobar/" ++ colorScheme ++ "-xmobarrc")
---   xmproc2 <- spawnPipe ("xmobar -x 2 $HOME/.config/xmobar/" ++ colorScheme ++ "-xmobarrc")
+  -- xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.config/xmobar/" ++ colorScheme ++ "-xmobarrc")
+  -- xmproc2 <- spawnPipe ("xmobar -x 2 $HOME/.config/xmobar/" ++ colorScheme ++ "-xmobarrc")
   -- the xmonad, ya know...what the WM is named after!
   xmonad $ addDescrKeys' ((mod4Mask, xK_F1), showKeybindings) myKeys $ ewmh $ docks $ def
     { manageHook         = myManageHook <+> manageDocks
-    , handleEventHook    = windowedFullscreenFixEventHook <> swallowEventHook (className =? "Alacritty"  <||> className =? "st-256color" <||> className =? "XTerm") (return True) <> trayerPaddingXmobarEventHook
+    , handleEventHook    = windowedFullscreenFixEventHook <> swallowEventHook (className =? "kitty"  <||> className =? "st-256color" <||> className =? "XTerm") (return True) <> trayerPaddingXmobarEventHook
     , modMask            = myModMask
     , terminal           = myTerminal
     , startupHook        = myStartupHook
-    , layoutHook         = showWName' myShowWNameTheme myLayoutHook
+    , layoutHook         = myLayoutHook
     , workspaces         = myWorkspaces
     , borderWidth        = myBorderWidth
     , normalBorderColor  = myNormColor
@@ -425,19 +483,19 @@ main = do
                         -- >> hPutStrLn xmproc1 x   -- xmobar on monitor 2
                         -- >> hPutStrLn xmproc2 x   -- xmobar on monitor 3
           -- Current workspace
-        , ppCurrent = xmobarColor  "#ffffff" ""
+        , ppCurrent = xmobarColor currentWs "" . clickable
           -- Visible but not current workspace
-        , ppVisible = xmobarColor "#585858" ""
+        , ppVisible = xmobarColor visibleWsNotCurrent ""
           -- Hidden workspace
-        , ppHidden = xmobarColor "#666666" "" . clickable
+        , ppHidden = xmobarColor hiddenWsNotVisible "" . clickable
           -- Hidden workspaces (no windows)
-        , ppHiddenNoWindows = xmobarColor "#333333" "" . clickable
+        , ppHiddenNoWindows = xmobarColor hiddenWsNoWindows "" . clickable
           -- Title of active window
-        , ppTitle = xmobarColor "#ffffff" "" . shorten 60
+        , ppTitle = xmobarColor wsTitle "" . shorten 60
           -- Separator character
-        , ppSep =  "<fc=" ++ "#a9467f" ++ "> <fn=1> || </fn> </fc>"
+        , ppSep =  "<fc=" ++ wsSep ++ "> <fn=1> || </fn> </fc>"
           -- Urgent workspace
-        , ppUrgent = xmobarColor "#cc0000" "" . wrap "!" "!"
+        , ppUrgent = xmobarColor urgentWs "" . wrap "!" "!"
           -- Adding # of windows on current workspace to the bar
         , ppExtras  = [windowCount]
           -- order of things in xmobar
