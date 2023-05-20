@@ -84,15 +84,9 @@ endif
 
 nnoremap <Leader>g :GitGutterDiffOrig<Cr><C-w>h
 
-highlight! link SignColumn NonText
 
 """ config for coc
 
-" to fix coc's ugly default colours
-
-highlight! link CocMenuSel IncSearch
-highlight! link CocFloating Conceal
-highlight! link CocHighlightText IncSearch
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: There's always complete item selected by default, you may want to enable
@@ -253,3 +247,25 @@ call plug#begin()
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'vim-airline/vim-airline'
 call plug#end()
+
+let g:airline#extensions#tabline#enabled = 1
+
+"""For powerline fonts do this first:
+"git clone git@github.com:powerline/fonts.git
+"cd fontd
+"./install.sh
+"
+let g:airline_powerline_fonts = 1
+
+""" Fix colours since VIM is a fucking piece of shit
+colorscheme default
+highlight! link SignColumn NonText
+
+" to fix coc's ugly default colours -- why is it this bad??
+
+highlight! link CocMenuSel IncSearch
+highlight! link CocFloating Conceal
+highlight! link CocHighlightText IncSearch
+highlight! link GitGutterAdd Type
+highlight! link GitGutterDelete Number
+highlight! link GitGutterChange Normal
