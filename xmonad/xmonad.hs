@@ -118,6 +118,9 @@ myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 myBorderWidth :: Dimension
 myBorderWidth = 2           -- Sets border width for windows
 
+mySpacingValue :: Integer
+mySpacingValue = 8
+
 myNormColor :: String       -- Border color of normal windows
 myNormColor =  fst $ black myTheme -- fst $ black myTheme
 -- myNormColor   = "#000000" 
@@ -170,6 +173,9 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 mySpacing' :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 
+myBorder :: Integer -> Border
+myBorder i = Border i i i i
+
 -- Defining a bunch of layouts, many that I don't use.
 -- limitWindows n sets maximum number of windows displayed for layout.
 -- mySpacing n sets the gap size around the windows.
@@ -179,7 +185,7 @@ tall     = renamed [Replace "tall"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
            $ subLayout [] (smartBorders Simplest)
-           $ mySpacing 8
+           $ mySpacing mySpacingValue
            $ ResizableTall 1 (3/100) (1/2) []
 monocle  = renamed [Replace "monocle"]
            $ smartBorders
@@ -193,7 +199,7 @@ grid     = renamed [Replace "grid"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
            $ subLayout [] (smartBorders Simplest)
-           $ mySpacing 8
+           $ mySpacing mySpacingValue
            $ mkToggle (single MIRROR)
            $ Grid (16/10)
 tabs     = renamed [Replace "tabs"]
@@ -375,7 +381,9 @@ myKeys c =
   [ ("C-M1-j", addName "Decrease window spacing" $ decWindowSpacing 4)
   , ("C-M1-k", addName "Increase window spacing" $ incWindowSpacing 4)
   , ("C-M1-h", addName "Decrease screen spacing" $ decScreenSpacing 4)
-  , ("C-M1-l", addName "Increase screen spacing" $ incScreenSpacing 4)]
+  , ("C-M1-l", addName "Increase screen spacing" $ incScreenSpacing 4)
+  , ("C-M1-r", addName "Reset window spacing"    $ setWindowSpacing $ myBorder mySpacingValue)
+  ]
 
   -- Increase/decrease windows in the master pane or the stack
   ^++^ subKeys "Increase/decrease windows in master pane or the stack"

@@ -61,7 +61,7 @@ Config { font            = "Ubuntu Bold 10"
                     , Run Memory ["-t", "<fn=2>\xf85a</fn>  mem: <used>M (<usedratio>%)"] 20
                         -- Disk space free
                     , Run DiskU [("/", "<fn=2>\xf0a0</fn>  ssd: <free> free")] [] 60
-                    , Run Com "bash" ["-c", "if [ $(nmcli networking connectivity) = 'full' ]; then echo '<fn=2>\xf05a9</fn>'; else echo '<fn=2>\xfaa9</fn>'; fi"] "wifi" 10
+                    , Run Com "bash" ["-c", "if [ $(nmcli networking connectivity) = 'full' ]; then echo '<fn=2>\xf05a9</fn>'; else echo '<fn=2>\xf05aa</fn>'; fi"] "wifi" 10
                         -- Volume
                     , Run Volume "default" "Master" ["--template", "<status> <volume>%", "--", "--on", "<fn=2>\xf028</fn>", "--off", "<fn=2>\xfa80</fn>", "--onc", "white", "--offc", "white"] 1
                         -- Time and date
