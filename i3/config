@@ -12,6 +12,7 @@ set $mod Mod4
 
 #font for window titles (not used as window titles are not shown)
 font -*-gohufont-medium-r-normal-*-14-100-100-100-*-*-iso10646-1
+default_border pixel
 
 floating_modifier $mod
 
