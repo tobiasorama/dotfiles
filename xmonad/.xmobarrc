@@ -31,10 +31,10 @@
    -- trayer
    -- 'dtos-local-bin' (from dtos-core-repo)
 
-Config { font            = "xft:Ubuntu:weight=bold:pixelsize=13:antialias=true:hinting=true"
-       , additionalFonts = [ "xft:Mononoki:pixelsize=13:antialias=true:hinting=true"
-                           , "xft:Font Awesome 6 Free Solid:pixelsize=14"
-                           , "xft:Font Awesome 6 Brands:pixelsize=14"
+Config { font            = "xft:Ubuntu:weight=bold:pixelsize=16:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:Mononoki:pixelsize=16:antialias=true:hinting=true"
+                           , "xft:Font Awesome 6 Free Solid:pixelsize=16"
+                           , "xft:Font Awesome 6 Brands:pixelsize=16"
                            ]
        , bgColor      = "#1e1f2b"
        , fgColor      = "#FCFCFA"

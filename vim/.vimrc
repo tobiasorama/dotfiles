@@ -20,7 +20,7 @@
 "
 set nocompatible
 
-colorscheme desert
+set shellcmdflag=-ic
 
 set number relativenumber
 
@@ -28,19 +28,31 @@ set tabstop=4
 set expandtab
 set shiftwidth=4
 
+set pastetoggle=<F2>
+
 set path+=**
+set wildignore+=*/oe-workdir/**,*/build/**,*/oe-log/**
 
 set wildmode=full
 set wildmenu
 
 set encoding=utf-8
 
+set ic
+set hlsearch
+nnoremap <Cr> :set hlsearch! hlsearch?<Cr>
+
 set nobackup
 set nowritebackup
+
+set hidden
 
 set signcolumn=yes
 
 set updatetime=250
+
+syntax on
+so ~/.vim/customfiletypes
 
 let mapleader=" "
 
@@ -65,6 +77,62 @@ nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 nnoremap n nzz
 nnoremap N Nzz
+
+nnoremap ]q :cnext<CR>
+nnoremap [q :cprev<CR>
+nnoremap ]Q :clast<CR>
+nnoremap [Q :cfirst<CR>
+
+""" tabs
+
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+nnoremap <leader>1 <Plug>AirlineSelectTab1
+nnoremap <leader>2 <Plug>AirlineSelectTab2
+nnoremap <leader>3 <Plug>AirlineSelectTab3
+nnoremap <leader>4 <Plug>AirlineSelectTab4
+nnoremap <leader>5 <Plug>AirlineSelectTab5
+nnoremap <leader>6 <Plug>AirlineSelectTab6
+nnoremap <leader>7 <Plug>AirlineSelectTab7
+nnoremap <leader>8 <Plug>AirlineSelectTab8
+nnoremap <leader>9 <Plug>AirlineSelectTab9
+nnoremap <leader>0 <Plug>AirlineSelectTab0
+nnoremap <leader>k <Plug>AirlineSelectPrevTab
+nnoremap <leader>j <Plug>AirlineSelectNextTab
+
+""" air-line
+
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = ''
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#alt_sep = 1
+
 """ config for ctrlP
 
 let g:ctrlp_show_hidden=1
@@ -75,6 +143,10 @@ if executable('rg')
     let g:ctrlp_use_caching=0
 endif
 
+let g:ctrlp_working_path_mode = 'wa'
+
+let g:ctrlp_match_window = 'min:4,max:999'
+
 """ config for gitgutter
 
 nnoremap <Leader>g :GitGutterDiffOrig<Cr><C-w>h
@@ -83,18 +155,9 @@ nnoremap <Leader>g :GitGutterDiffOrig<Cr><C-w>h
 "nmap <Leader>d <Plug>(ale_go_to_definition)
 "nmap <Leader>r <Plug>(ale_find_references)
 
-highlight GitGutterAdd     ctermbg=black ctermfg=green
-highlight GitGutterChange  ctermbg=black ctermfg=yellow
-highlight GitGutterDelete  ctermbg=black ctermfg=red
-highlight! link SignColumn LineNr
 
 """ config for coc
 
-" to fix coc's ugly default colours
-
-highlight! link CocMenuSel IncSearch
-highlight! link CocFloating Conceal
-highlight! link CocHighlightText IncSearch
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: There's always complete item selected by default, you may want to enable
@@ -207,8 +270,8 @@ endif
 
 " Use CTRL-S for selections ranges.
 " Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
+" nmap <silent> <C-s> <Plug>(coc-range-select)
+" xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocActionAsync('format')
@@ -252,5 +315,22 @@ call plug#begin()
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'rhysd/vim-clang-format'
+    Plug 'christoomey/vim-tmux-navigator'
+    Plug 'vim-airline/vim-airline'
 call plug#end()
 
+""" FIX COLOURS SINCE PLUGINS ARE FUCKING BROKEN
+colorscheme default
+
+"fix gitgutter
+highlight! link SignColumn NonText
+highlight! link GitGutterAdd Question
+highlight! link GitGutterChange Normal
+highlight! link GitGutterDelete WarningMsg
+"fix coc
+"highlight! link CocInlayHint comment
+" to fix coc's ugly default colours
+
+highlight! link CocMenuSel TabLineFill
+highlight! link CocFloating TabLineFill
+highlight! link CocHighlightText IncSearch
