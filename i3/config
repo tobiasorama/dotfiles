@@ -58,6 +58,9 @@ bindsym $mod+Shift+9 move workspace 9
 workspace_auto_back_and_forth yes
 
 # layout
+bindsym $mod+f fullscreen toggle
+bindsym $mod+s layout toggle splith tabbed
+bindsym $mot+Shift+f floating toggle
 
 # default applications
 bindsym $mod+Return exec kitty
@@ -78,13 +81,12 @@ mode "$mode_system" {
     bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym Shift+s  exec --no-startup-id systemctl poweroff -i, mode "default"
-    bindsym Escape exec --no-startup-id test 1, mode "default"
+    bindsym Escape, mode "default"
 }
 
 bindsym $mod+Pause mode "$mode_system"
 
 # volume
-
 bindsym $mod+Prior exec --no-startup-id amixer -q set Master 2%+ unmute
 bindsym $mod+Next exec --no-startup-id amixer -q set Master 2%- unmute
 bindsym $mod+End exec --no-startup-id amixer -q set Master toggle
