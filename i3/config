@@ -54,6 +54,11 @@ bindsym $mod+Shift+7 move workspace 7
 bindsym $mod+Shift+8 move workspace 8
 bindsym $mod+Shift+9 move workspace 9
 
+# swap to previous workspace
+workspace_auto_back_and_forth yes
+
+# layout
+
 # default applications
 bindsym $mod+Return exec kitty
 bindsym $mod+b exec qutebrowser
@@ -64,7 +69,7 @@ bindsym $mod+p exec --no-startup-id dmenu_run
 bindsym $mod+Shift+c kill
 
 # power and locking options
-set $Locker betterlockscreen -l && sleep 1
+set $Locker i3lock -k --blur=5 --inside-color=00000000 --time-color=ffffffff --date-color=ffffffff --ring-width=20 && sleep 1
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
