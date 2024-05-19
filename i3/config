@@ -15,6 +15,7 @@ font -*-gohufont-medium-r-normal-*-14-100-100-100-*-*-iso10646-1
 default_border pixel
 
 floating_modifier $mod
+bindsym $mod+v floating toggle
 
 # reload config
 bindsym $mod+q exec i3-msg reload
@@ -59,7 +60,7 @@ workspace_auto_back_and_forth yes
 
 # layout
 bindsym $mod+f fullscreen toggle
-bindsym $mod+s layout toggle splith tabbed
+bindsym $mod+space layout toggle splith tabbed
 bindsym $mot+Shift+f floating toggle
 
 # default applications
@@ -94,6 +95,7 @@ bindsym $mod+End exec --no-startup-id amixer -q set Master toggle
 # gaps
 gaps inner 10px
 gaps outer 8px
+gaps top -10px
 
 set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
 set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
