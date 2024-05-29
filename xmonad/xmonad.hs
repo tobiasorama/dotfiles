@@ -27,7 +27,7 @@ import qualified XMonad.StackSet as W
 
     -- Actions
 import XMonad.Actions.CopyWindow (kill1)
-import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextScreen, prevScreen)
+import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextScreen, prevScreen, toggleWS)
 import XMonad.Actions.GridSelect
 import XMonad.Actions.MouseResize
 import XMonad.Actions.Promote
@@ -35,6 +35,7 @@ import XMonad.Actions.RotSlaves (rotSlavesDown, rotAllDown)
 import XMonad.Actions.WindowGo (runOrRaise)
 import XMonad.Actions.WithAll (sinkAll, killAll)
 import qualified XMonad.Actions.Search as S
+import XMonad.Actions.TreeSelect
 
     -- Data
 import Data.Char (isSpace, toUpper)
@@ -83,20 +84,13 @@ import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
    -- Utilities
 import XMonad.Util.Dmenu
-import XMonad.Util.EZConfig (additionalKeysP, mkNamedKeymap)
+import XMonad.Util.EZConfig (additionalKeysP, mkNamedKeymap, removeKeysP)
 import XMonad.Util.Hacks (windowedFullscreenFixEventHook, javaHack, trayerAboveXmobarEventHook, trayAbovePanelEventHook, trayerPaddingXmobarEventHook, trayPaddingXmobarEventHook, trayPaddingEventHook)
 import XMonad.Util.NamedActions
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Cursor
-
-  -- Theme
-import SakuraNight
-import MyModules.Themes (VisualTheme (..))
-
-myTheme :: VisualTheme
-myTheme = SakuraNight.newTheme
 
 myFont :: String
 myFont = "xft:Cascadia Code Mono:regular:size=10:antialias=true:hinting=true"
@@ -122,12 +116,10 @@ mySpacingValue :: Integer
 mySpacingValue = 8
 
 myNormColor :: String       -- Border color of normal windows
-myNormColor =  fst $ black myTheme -- fst $ black myTheme
--- myNormColor   = "#000000" 
+myNormColor   = "#000000"
 
 myFocusColor :: String      -- Border color of focused windows
-myFocusColor = snd $ blue myTheme
--- myFocusColor  = "#910053" 
+myFocusColor  = "#557E90"
 
 mySoundPlayer :: String
 mySoundPlayer = "ffplay -nodisp -autoexit " -- The program that will play system sounds
@@ -143,18 +135,8 @@ myStartupHook = do
   setDefaultCursor xC_left_ptr
 
 myScratchPads :: [NamedScratchpad]
-myScratchPads = [ NS "scratchpad" spawnScratchPad findScratchPad manageScratchpad
-                , NS "calculator" spawnCalc findCalc manageCalc
-                ]
+myScratchPads = [ NS "calculator" spawnCalc findCalc manageCalc ]
   where
-    spawnScratchPad  = myEditor ++ " ~/.scratchpad --class scratchpad"
-    findScratchPad = title =? "scratchpad"
-    manageScratchpad = customFloating $ W.RationalRect l t w h
-               where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w
     spawnCalc  = "qalculate-gtk"
     findCalc   = className =? "Qalculate-gtk"
     manageCalc = customFloating $ W.RationalRect l t w h
@@ -229,25 +211,22 @@ myLayoutHook = avoidStruts
                                            ||| noBorders tabs
                                            ||| grid
 
--- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
--- myWorkspaces = [" dev ", " www ", " sys ", " doc ", " games ", " chat ", " mus ", " vid ", " gfx "]
 myWorkspaces =
-        "  <fn=2>\xe795</fn>  " :
-        "  <fn=2>\xf059f</fn>  " :
-        "  <fn=2>\xf303</fn>  " :
-        "  <fn=2>\xf718</fn>  " :
-        "  <fn=2>\xf11b</fn>  " :
-        "  <fn=2>\xf066f</fn>  " :
-        "  <fn=2>\xf001</fn>  " :
-        "  <fn=2>\xeb39</fn>  " :
-        "  <fn=2>\xf03e</fn>  " :
+        " <fn=2>\xe795</fn>" :
+        " <fn=2>\xf059f</fn>" :
+        " <fn=2>\xf303</fn>" :
+        " <fn=2>\xf718</fn>" :
+        " <fn=2>\xf11b</fn>" :
+        " <fn=2>\xf066f</fn>" :
+        " <fn=2>\xf001</fn>" :
+        " <fn=2>\xeb39</fn>" :
+        " <fn=2>\xf03e</fn>" :
         []
 myWorkspaceIndices = M.fromList $ zip myWorkspaces [1..]
 
 clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
     where i = fromJust $ M.lookup ws myWorkspaceIndices
 
-myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
   -- 'doFloat' forces a window to float.  Useful for dialog boxes and such.
   -- using 'doShift ( myWorkspaces !! 7)' sends program to workspace 8!
@@ -311,7 +290,8 @@ myKeys c =
   , ("M-6", addName "Switch to workspace 6"    (windows $ W.greedyView $ myWorkspaces !! 5))
   , ("M-7", addName "Switch to workspace 7"    (windows $ W.greedyView $ myWorkspaces !! 6))
   , ("M-8", addName "Switch to workspace 8"    (windows $ W.greedyView $ myWorkspaces !! 7))
-  , ("M-9", addName "Switch to workspace 9"    (windows $ W.greedyView $ myWorkspaces !! 8))]
+  , ("M-9", addName "Switch to workspace 9"    (windows $ W.greedyView $ myWorkspaces !! 8))
+  , ("M-|", addName "Toggle previous workspace" XMonad.Actions.CycleWS.toggleWS)]
 
   ^++^ subKeys "Send window to workspace"
   [ ("M-S-1", addName "Send to workspace 1"    (windows $ W.shift $ myWorkspaces !! 0))
@@ -325,8 +305,8 @@ myKeys c =
   , ("M-S-9", addName "Send to workspace 9"    (windows $ W.shift $ myWorkspaces !! 8))]
 
   ^++^ subKeys "Move window to WS and go there"
-  [ ("M-S-<Page_Up>", addName "Move window to next WS"   $ shiftTo Next nonNSP >> moveTo Next nonNSP)
-  , ("M-S-<Page_Down>", addName "Move window to prev WS" $ shiftTo Prev nonNSP >> moveTo Prev nonNSP)]
+  [ ("M-S-<Page_Up>", addName "Move window to next WS"   $ shiftTo Next nonNSP >> XMonad.Actions.CycleWS.moveTo Next nonNSP)
+  , ("M-S-<Page_Down>", addName "Move window to prev WS" $ shiftTo Prev nonNSP >> XMonad.Actions.CycleWS.moveTo Prev nonNSP)]
 
   ^++^ subKeys "Window navigation"
   [ ("M-<Tab>", addName "Move focus to next window"                $ windows W.focusDown)
@@ -342,16 +322,19 @@ myKeys c =
   ^++^ subKeys "Favorite programs"
   [ ("M-<Return>", addName "Launch terminal"   $ spawn myTerminal)
   , ("M-b", addName "Launch web browser"       $ spawn myBrowser)
-  , ("M-M1-h", addName "Launch htop"           $ spawn (myTerminal ++ " -e htop"))
   , ("M-p", addName "Launch DMenu"             $ spawn "dmenu_run")
   , ("M-n", addName "Launch file explorer"     $ spawn myFileExplorer)
   ]
 
   ^++^ subKeys "Power options"
   [
-    ("M-S-l", addName "Lock screen"            $ spawn "betterlockscreen -l")
-  , ("M-S-q", addName "Shut down"              $ spawn "shutdown now") 
-  , ("M-S-s", addName "Sleep"                  $ spawn "betterlockscreen -l && systemctl suspend")
+    ("M-<Pause>", addName "Power Options"  $ XMonad.Actions.TreeSelect.treeselectAction XMonad.Actions.TreeSelect.def
+      [ Node (TSNode "Lock"     "" (spawn "betterlockscreen -l")) []
+      , Node (TSNode "Log out"  "" (spawn "killall xmonad")) []
+      , Node (TSNode "Suspend"  "" (spawn "betterlockscreen -l && systemctl suspend")) []
+      , Node (TSNode "Shutdown" "" (spawn "systemctl shutdown")) []
+      ]
+    )
   ]
 
   ^++^ subKeys "Monitors"
@@ -402,8 +385,8 @@ myKeys c =
   -- Toggle show/hide these programs. They run on a hidden workspace.
   -- When you toggle them to show, it brings them to current workspace.
   -- Toggle them to hide and it sends them back to hidden workspace (NSP).
-  ^++^ subKeys "Scratchpads" [ ("M-s t", addName "Toggle scratchpad editor"   $ namedScratchpadAction myScratchPads "scratchpad")
-  , ("M-s c", addName "Toggle scratchpad calculator" $ namedScratchpadAction myScratchPads "calculator")]
+  ^++^ subKeys "Scratchpads"
+  [ ("M-s c", addName "Toggle scratchpad calculator" $ namedScratchpadAction myScratchPads "calculator")]
 
   -- Multimedia Keys
   ^++^ subKeys "Multimedia keys"
@@ -419,54 +402,22 @@ myKeys c =
 
 -- colourscheme
 currentWs :: String
-currentWs = snd $ cyan myTheme
--- currentWs = "#ffffff"
+currentWs = "#ffffff"
 
 visibleWsNotCurrent :: String
-visibleWsNotCurrent = snd $ white myTheme
---visibleWsNotCurrent = "#585858"
+visibleWsNotCurrent = "#585858"
 
 hiddenWsNotVisible :: String
-hiddenWsNotVisible = fst $ cyan myTheme
---hiddenWsNotVisible = "#666666"
+hiddenWsNotVisible = "#666666"
 
 hiddenWsNoWindows :: String
-hiddenWsNoWindows = fst $ black myTheme
---hiddenWsNoWindows = "#333333"
+hiddenWsNoWindows = "#333333"
 
 wsTitle :: String
-wsTitle = fst $ white myTheme
---wsTitle = "#ffffff"
-
-wsSep :: String
-wsSep = fst $ magenta myTheme
---wsSep = "#a9467f"
+wsTitle = "#ffffff"
 
 urgentWs ::String
-urgentWs = fst $ red myTheme
---urgentWs = "#cc0000"
-
--- colourscheme 2
--- currentWs :: String
--- currentWs = "#02ffeb"
--- 
--- visibleWsNotCurrent :: String
--- visibleWsNotCurrent = "#c0fffa"
--- 
--- hiddenWsNotVisible :: String
--- hiddenWsNotVisible = "#c0fffa"
--- 
--- hiddenWsNoWindows :: String
--- hiddenWsNoWindows = "#008f84"
--- 
--- wsTitle :: String
--- wsTitle = "#02ffeb"
--- 
--- wsSep :: String
--- wsSep = "#02ffeb"
--- 
--- urgentWs ::String
--- urgentWs = "#cc0000"
+urgentWs = "#cc0000"
 
 main :: IO ()
 main = do
@@ -501,12 +452,11 @@ main = do
           -- Title of active window
         , ppTitle = xmobarColor wsTitle "" . shorten 60
           -- Separator character
-        , ppSep =  "<fc=" ++ wsSep ++ "> <fn=1> || </fn> </fc>"
+        , ppSep =  " <fn=1> | </fn> "
           -- Urgent workspace
         , ppUrgent = xmobarColor urgentWs "" . wrap "!" "!"
-          -- Adding # of windows on current workspace to the bar
-        , ppExtras  = [windowCount]
           -- order of things in xmobar
-        , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
+        , ppOrder  = \(ws:t:ex) -> [ws]++ex
         }
     }
+    `removeKeysP` ["M-S-q"]

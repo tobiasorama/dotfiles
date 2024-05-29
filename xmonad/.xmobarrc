@@ -16,35 +16,17 @@
 --                       █                                    █             █                █              █                            
 --                        █                                    █             █                █              █                           
 --                         ██                                   ██            ██               ██             ██                         
---                                                                                                                                       
--- 
--- Xmobar (http://projects.haskell.org/xmobar/)
--- Color scheme: Sakura Night
--- Dependencies: 
-   -- ttf-mononoki 
-   -- ttf-ubuntu-font-family
-   -- ttf-nerd-fonts
-   -- htop
-   -- pacman (Arch Linux)
-   -- nmcli configred as network manager
 
--- osColor  = "#b55088" --"#FF6188"
--- cpuColor = "#63c74d" --"#A9DC76"
--- memColor = "#ff0044" --"#FC9867"
--- ssdColor = "#feea34" --"#FFD866"
-
-Config { font            = "Ubuntu Bold 10"
-       , additionalFonts = [ "Ubuntu Bold 10"
-                           , "Symbols Nerd Font Mono 12"
-                           ]
+Config { font            = "Fira Code Nerd Font Regular 11"
        , bgColor      = "#262b44" --"#1e1f2b"
        , fgColor      = "#c0cbdc" --"#FCFCFA"
+       , alpha        = 200
        -- Position TopSize and BottomSize take 3 arguments:
        --   an alignment parameter (L/R/C) for Left, Right or Center.
        --   an integer for the percentage width, so 100 would be 100%.
        --   an integer for the minimum pixel height for xmobar, so 24 would force a height of at least 24 pixels.
        --   NOTE: The height should be the same as the trayer (system tray) height.
-       , position       = TopSize L 100 24
+       , position       = TopSize L 100 27
        , lowerOnStart = True
        , hideOnStart  = False
        , allDesktops  = True
@@ -52,24 +34,24 @@ Config { font            = "Ubuntu Bold 10"
        , iconRoot     = ".xmonad/xpm/"  -- default: "."
        , commands = [
                         -- Echos a "penguin" icon in front of the kernel output.
-                      Run Com "echo" ["<fn=2>\xebc6</fn>"] "penguin" 3600
+                      Run Com "echo" ["\xebc6"] "penguin" 3600
                         -- Get kernel version (script found in .local/bin)
                     , Run Com "uname" ["-r"] "kernel" 36000
                         -- Cpu usage in percent
-                    , Run Cpu ["-t", "<fn=2>\xf878</fn>  cpu: (<total>%)","-H","50","--high","red"] 20
+                    , Run Cpu ["-t", "\xec19 <total>%","-H","50","--high","red"] 20
                         -- Ram used number and percent
-                    , Run Memory ["-t", "<fn=2>\xf85a</fn>  mem: <used>M (<usedratio>%)"] 20
+                    , Run Memory ["-t", "\xf09d1 <usedratio>%"] 20
                         -- Disk space free
-                    , Run DiskU [("/", "<fn=2>\xf0a0</fn>  ssd: <free> free")] [] 60
-                    , Run Com "bash" ["-c", "if [ $(nmcli networking connectivity) = 'full' ]; then echo '<fn=2>\xf05a9</fn>'; else echo '<fn=2>\xf05aa</fn>'; fi"] "wifi" 10
+                    , Run DiskU [("/", "\xe240 <free> ")] [] 60
+                    , Run Com "bash" ["-c", "if [ $(nmcli networking connectivity) = 'full' ]; then echo '\xf05a9'; else echo '\xf05aa'; fi"] "wifi" 10
                         -- Volume
-                    , Run Volume "default" "Master" ["--template", "<status> <volume>%", "--", "--on", "<fn=2>\xf028</fn>", "--off", "<fn=2>\xfa80</fn>", "--onc", "white", "--offc", "white"] 1
+                    , Run Volume "default" "Master" ["--template", "<status> <volume>%", "--", "--on", "\xf028 ", "--off", "\xfa80 ", "--onc", "white", "--offc", "white"] 1
                         -- Time and date
-                    , Run Date "<fn=2>\xf5ef</fn>  %d/%m/%Y - (%H:%M:%S) " "date" 1
+                    , Run Date "%H:%M:%S %d/%m/%Y" "date" 1
                         -- Prints out the left side items such as workspaces, layout, etc.
                     , Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }{ <fc=#b55088>%penguin%  %kernel%</fc>    <fc=#63c74d><action=`kitty -e htop`>%cpu%</action></fc>    <fc=#e43b44><action=`kitty -e htop`>%memory%</action></fc>    <fc=#fee761>%disku%</fc>    %default:Master%    <action=`kitty -e nmcli`>%wifi%</action>    %date% "
+       , template = " %UnsafeStdinReader% }{  <action=`kitty -e htop`>%cpu%</action>   <action=`kitty -e htop`>%memory%</action>    %disku%    %default:Master%    <action=`kitty -e nmcli`>%wifi%</action>  %date% "
        }
