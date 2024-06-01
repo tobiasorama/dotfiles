@@ -42,16 +42,17 @@ Config { font            = "Fira Code Nerd Font Regular 11"
                         -- Ram used number and percent
                     , Run Memory ["-t", "\xf09d1 <usedratio>%"] 20
                         -- Disk space free
-                    , Run DiskU [("/", "\xe240 <free> ")] [] 60
+                    , Run DiskU [("/", "\xe240  <free> ")] [] 60
                     , Run Com "bash" ["-c", "if [ $(nmcli networking connectivity) = 'full' ]; then echo '\xf05a9'; else echo '\xf05aa'; fi"] "wifi" 10
                         -- Volume
-                    , Run Volume "default" "Master" ["--template", "<status> <volume>%", "--", "--on", "\xf028 ", "--off", "\xfa80 ", "--onc", "white", "--offc", "white"] 1
+                    , Run Volume "default" "Master" ["--template", "<status> <volume>%", "--", "--on", "\xf028 ", "--off", "\xeee8 ", "--onc", "white", "--offc", "grey"] 1
                         -- Time and date
                     , Run Date "%H:%M:%S %d/%m/%Y" "date" 1
                         -- Prints out the left side items such as workspaces, layout, etc.
                     , Run UnsafeStdinReader
+                    , Run Com "echo" ["<fc=#777777>|</fc>"] "sep" 3600
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }{  <action=`kitty -e htop`>%cpu%</action>   <action=`kitty -e htop`>%memory%</action>    %disku%    %default:Master%    <action=`kitty -e nmcli`>%wifi%</action>  %date% "
+       , template = " %UnsafeStdinReader% }{  <action=`kitty -e htop`>%cpu%</action>  %sep%  <action=`kitty -e htop`>%memory%</action>  %sep%  %disku% %sep%  %default:Master%  %sep%  <action=`kitty -e nmcli`>%wifi%</action>  %sep% %date% "
        }
