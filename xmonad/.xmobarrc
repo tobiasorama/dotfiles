@@ -47,7 +47,7 @@ Config { font            = "Fira Code Nerd Font Regular 11"
                         -- Volume
                     , Run Volume "default" "Master" ["--template", "<status> <volume>%", "--", "--on", "\xf028 ", "--off", "\xeee8 ", "--onc", "white", "--offc", "grey"] 1
                         -- Time and date
-                    , Run Date "%H:%M:%S %d/%m/%Y" "date" 1
+                    , Run Date "%d/%m/%Y %H:%M:%S" "date" 1
                         -- Prints out the left side items such as workspaces, layout, etc.
                     , Run UnsafeStdinReader
                     , Run Com "echo" ["<fc=#777777>|</fc>"] "sep" 3600
