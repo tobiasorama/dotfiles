@@ -41,7 +41,7 @@ Config { font            = "Fira Code Nerd Font Regular 11"
                     , Run DiskU [("/", "\xe240  <free> ")] [] 60
                     , Run Com "bash" ["-c", "if [ -n '$(ifconfig -u | grep wlan0)' ]; then echo '\xf05a9'; else echo '\xf05aa'; fi"] "wifi" 10
                         -- Volume
-		    , Run Com "bash" ["-c", "if [ -z $(mixer -o | grep vol.mute.off) ]; then echo -n '\xf0581 '; else echo -n '\xf057e '; fi; OUT=$(mixer -o | grep vol.volume); echo ${OUT#:};"] "volume" 1
+		    , Run Com "bash" ["-c", "if [ -z $(mixer -o | grep vol.mute.off) ]; then echo -n '\xf0581 '; else echo -n '\xf057e '; fi; VOL=$(mixer -o | grep vol.volume | awk -F ':' '{ print $2 }'); echo $(bc -l --expression=\"ceil(100*$VOL, 0)\")%"] "volume" 1
                         -- Time and date
                     , Run Date "%d/%m/%Y %H:%M:%S" "date" 1
                         -- Prints out the left side items such as workspaces, layout, etc.
