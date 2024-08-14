@@ -1,0 +1,55 @@
+--    ███          ██         █████   ██    ██        █ ███        █████ ██                       █████ ███      █████ ███       █ ███ █ 
+--   █████       ████  █   ██████  █████ █████      █  ████     ██████  ███      █████         ██████  █ ██   ██████  █ ██     █  ████  █
+--  █   ███      ██████   ██   █  █  █████ █████   █  █  ███   ██   █  █ ██     █  ███        ██   █  █  ██  ██   █  █  ██    █  █  ████ 
+--       ███    █   ██   █    █  █   █ ██  █ ██   █  ██   ███ █    █  █  ██        ███       █    █  █   ██ █    █  █   ██   █  ██   ██  
+--        ███  █             █  █    █     █     █  ███    ███    █  █   █        █  ██          █  █    █      █  █    █   █  ███       
+--         ████             ██ ██    █     █    ██   ██     ██   ██ ██  █         █  ██         ██ ██   █      ██ ██   █   ██   ██       
+--          ███             ██ ██    █     █    ██   ██     ██   ██ ██ █         █    ██        ██ ██  █       ██ ██  █    ██   ██       
+--          ████            ██ ██    █     █    ██   ██     ██   ██ ███          █    ██        ██ ████        ██ ████     ██   ██       
+--         █  ███           ██ ██    █     █    ██   ██     ██   ██ ██ ███      █      ██       ██ ██  ███     ██ ██  ███  ██   ██       
+--        █    ███          ██ ██    █     ██   ██   ██     ██   ██ ██   ███    █████████       ██ ██    ██    ██ ██    ██ ██   ██       
+--       █      ███         █  ██    █     ██    ██  ██     ██   █  ██     ██  █        ██      █  ██    ██    █  ██    ██  ██  ██       
+--      █        ███           █     █      ██    ██ █      █       █      ██  █        ██         █     ██       █     ██   ██ █      █ 
+--     █          ███   █  ████      █      ██     ███     █    ████     ███  █████      ██    ████      ███  ████      ███   ███     █  
+--    █            █████  █  █████           ██     ███████    █  ████████   █   ████    ██ █ █  ████    ██  █  ████    ██     ███████   
+--   █              ███  █     ██                     ███     █     ████    █     ██      ██ █    ██     █  █    ██     █        ███     
+--                       █                                    █             █                █              █                            
+--                        █                                    █             █                █              █                           
+--                         ██                                   ██            ██               ██             ██                         
+
+Config { font            = "Fira Code Nerd Font Regular 11"
+       , bgColor      = "#262b44" --"#1e1f2b"
+       , fgColor      = "#c0cbdc" --"#FCFCFA"
+       , alpha        = 200
+       -- Position TopSize and BottomSize take 3 arguments:
+       --   an alignment parameter (L/R/C) for Left, Right or Center.
+       --   an integer for the percentage width, so 100 would be 100%.
+       --   an integer for the minimum pixel height for xmobar, so 24 would force a height of at least 24 pixels.
+       --   NOTE: The height should be the same as the trayer (system tray) height.
+       , position       = TopSize L 100 27
+       , lowerOnStart = True
+       , hideOnStart  = False
+       , allDesktops  = True
+       , persistent   = True
+       , iconRoot     = ".xmonad/xpm/"  -- default: "."
+       , commands = [
+                        -- Cpu usage in percent
+                    Run Cpu ["-t", "\xf4bc <total>%","-H","50","--high","red"] 20
+                        -- Ram used number and percent
+                    , Run Memory ["-t", "\xf09d1 <usedratio>%"] 20
+                        -- Disk space free
+                    , Run DiskU [("/", "\xe240  <free> ")] [] 60
+                    , Run Com "bash" ["-c", "if [ -n '$(ifconfig -u | grep wlan0)' ]; then echo '\xf05a9'; else echo '\xf05aa'; fi"] "wifi" 10
+                        -- Volume
+		    , Run Com "bash" ["-c", "if [ -z $(mixer -o | grep vol.mute.off) ]; then echo -n '\xf0581 '; else echo -n '\xf057e '; fi; OUT=$(mixer -o | grep vol.volume); echo ${OUT#:};"] "volume" 1
+                        -- Time and date
+                    , Run Date "%d/%m/%Y %H:%M:%S" "date" 1
+                        -- Prints out the left side items such as workspaces, layout, etc.
+                    , Run UnsafeStdinReader
+                    , Run Com "echo" ["<fc=#777777>|</fc>"] "sep" 3600
+		    , Run Com "bash" ["-c", "BATLIFE=$(sysctl -a | grep battery.life | grep -oe '[0-9]\\+'); if [ $BATLIFE -lt 10 ]; then echo -n '<fc=#ff0000>\xf244</fc>  '; elif [ $BATLIFE -lt 20 ]; then echo -n '<fc=#ff0000>\xf243</fc>  '; elif [ $BATLIFE -lt 50 ]; then echo -n '\xf243  '; elif [ $BATLIFE -lt 70 ]; then echo -n '\xf241  '; else echo -n '\xf240  '; fi; echo -n $BATLIFE%; if [ -n \"$(sysctl -a | grep 'battery.time: -1')\" ]; then echo ' \xf06a5'; fi"] "battery" 20
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " %UnsafeStdinReader% }{  <action=`kitty -e htop`>%cpu%</action>  %sep%  <action=`kitty -e htop`>%memory%</action>  %sep%  %disku% %sep%  %volume%  %sep%  <action=`kitty -e nmcli`>%wifi%</action>  %sep% %battery% %sep% %date% "
+       }
