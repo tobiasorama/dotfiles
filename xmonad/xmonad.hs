@@ -473,7 +473,7 @@ urgentWs = "#cc0000"
 
 main :: IO ()
 main = do
-  xmproc0 <- spawnPipe "xmobar"
+  xmproc0 <- spawnPipe "xmobar -x 0 /home/tobias/.xmonad/xmobarrc"
   -- the xmonad, ya know...what the WM is named after!
   xmonad $
     addDescrKeys' ((mod4Mask, xK_F1), showKeybindings) myKeys $

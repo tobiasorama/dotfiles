@@ -375,10 +375,10 @@ myKeys c =
             , addName "Power Options" $
                 XMonad.Actions.TreeSelect.treeselectAction
                   powerOptionsDef
-                  [ Node (TSNode "Lock" "" (spawn "betterlockscreen -l")) []
+                  [ Node (TSNode "Lock" "" (spawn "slock")) []
                   , Node (TSNode "Logout" "" (io exitSuccess)) []
-                  , Node (TSNode "Suspend" "" (spawn "betterlockscreen -l && sleep 2 && systemctl suspend")) []
-                  , Node (TSNode "Shutdown" "" (spawn "systemctl shutdown")) []
+                  , Node (TSNode "Suspend" "" (spawn "slock && sleep 2 && zzz")) []
+                  , Node (TSNode "Shutdown" "" (spawn "poweroff")) []
                   ]
             )
           ]
@@ -447,6 +447,11 @@ myKeys c =
           , ("<XF86AudioRaiseVolume>", addName "Raise vol" $ spawn "mixer vol.volume=+5%")
           , ("S-p", addName "Flameshot" $ spawn "flameshot gui")
           ]
+	^++^ subKeys
+	  "Brightness control"
+	  [ ("M-j", addName "Decrease brightness" $ spawn "backlight decr")
+          , ("M-k", addName "Increase brightness" $ spawn "backlight incr")
+	  ]
  where
   -- The following lines are needed for named scratchpads.
   nonNSP = WSIs (return (\ws -> W.tag ws /= "NSP"))
