@@ -259,7 +259,7 @@ myManageHook =
     , className =? "pinentry-gtk-2" --> doFloat
     , className =? "splash" --> doFloat
     , className =? "toolbar" --> doFloat
-    , title =? "Mozilla Firefox" --> doShift (myWorkspaces !! 4)
+    , title =? "Mozilla Firefox" --> doShift (myWorkspaces !! 3)
     , className =? "mpv" --> doShift (myWorkspaces !! 7)
     , className =? "Gimp" --> doShift (myWorkspaces !! 8)
     , className =? "Qemu-system-x86_64" --> doCenterFloat
@@ -370,9 +370,9 @@ myKeys c =
             , addName "Power Options" $
                 XMonad.Actions.TreeSelect.treeselectAction
                   powerOptionsDef
-                  [ Node (TSNode "Lock" "" (spawn "betterlockscreen -l")) []
+                  [ Node (TSNode "Lock" "" (spawn "slock")) []
                   , Node (TSNode "Logout" "" (io exitSuccess)) []
-                  , Node (TSNode "Suspend" "" (spawn "betterlockscreen -l && sleep 2 && systemctl suspend")) []
+                  , Node (TSNode "Suspend" "" (spawn "slock && sleep 2 && systemctl suspend")) []
                   , Node (TSNode "Shutdown" "" (spawn "systemctl shutdown")) []
                   ]
             )
