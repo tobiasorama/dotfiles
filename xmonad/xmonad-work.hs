@@ -437,9 +437,9 @@ myKeys c =
         -- Multimedia Keys
         ^++^ subKeys
           "Multimedia keys"
-          [ ("<XF86AudioMute>", addName "Toggle audio mute" $ spawn "amixer set Master toggle")
-          , ("<XF86AudioLowerVolume>", addName "Lower vol" $ spawn "amixer set Master 5%- unmute")
-          , ("<XF86AudioRaiseVolume>", addName "Raise vol" $ spawn "amixer set Master 5%+ unmute")
+          [ ("<XF86AudioMute>", addName "Toggle audio mute" $ spawn "amixer -D pulse sset Master toggle")
+          , ("<XF86AudioLowerVolume>", addName "Lower vol" $ spawn "amixer -D pulse sset Master 5%- unmute")
+          , ("<XF86AudioRaiseVolume>", addName "Raise vol" $ spawn "amixer -D pulse sset Master 5%+ unmute")
           , ("M-S-p", addName "Flameshot" $ spawn "flameshot gui")
           ]
  where
