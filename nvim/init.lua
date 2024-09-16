@@ -67,3 +67,12 @@ require("gitsigns").setup {
       col = 1
     },
 }
+
+-- Fix signcolumn
+vim.api.nvim_set_hl(0, "SignColumn", {ctermbg=NONE})
+vim.api.nvim_set_hl(0, "GitSignsAdd", {ctermfg=121, ctermbg=NONE})
+vim.api.nvim_set_hl(0, "GitSignsChange", {ctermfg=12, ctermbg=NONE})
+vim.api.nvim_set_hl(0, "GitSignsDelete", {ctermfg=1, ctermbg=NONE})
+vim.api.nvim_set_hl(0, "GitSignsChangedelete", {ctermfg=1, ctermbg=NONE})
+vim.api.nvim_set_hl(0, "GitSignsTopdelete", {ctermfg=1, ctermbg=NONE})
+vim.api.nvim_set_hl(0, "GitSignsUntracked", {ctermfg=cleared, ctermbg=NONE})
