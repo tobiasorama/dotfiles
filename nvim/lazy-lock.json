@@ -1,4 +1,5 @@
 {
+  "catppuccin": { "branch": "main", "commit": "63685e1562ef53873c9764b483d7ac5c7a608922" },
   "coq.artifacts": { "branch": "artifacts", "commit": "a1ffcee295905171d87b40ee456001d45b10329b" },
   "coq.thirdparty": { "branch": "3p", "commit": "a827c2ab76d7c803976765cac597c79a2a5b34f6" },
   "coq_nvim": { "branch": "coq", "commit": "4bc64cbba3eeadd16dc1d13c3becf1e8457ddce5" },
