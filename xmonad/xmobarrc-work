@@ -54,5 +54,5 @@ Config { font            = "Fira Code Nerd Font Regular 11"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }{  <action=`kitty -e htop`>%cpu%</action>  %sep%  <action=`kitty -e htop`>%memory%</action>  %sep%  %disku% %sep%  %default:Master%  %sep%  <action=`kitty -e nmcli`>%wifi%</action>  %sep% %date% "
+       , template = " %UnsafeStdinReader% }{  <action=`kitty -e htop`>%cpu%</action>  %sep%  <action=`kitty -e htop`>%memory%</action>  %sep%  %disku% %sep%  <action=`amixer -D pulse sset Master toggle` button=1><action=`amixer -D pulse sset Master 1311- unmute` button=4><action=`amixer -D pulse sset Master 1311+ unmute` button=5>%default:Master%</action></action></action>  %sep%  <action=`kitty -e nmcli`>%wifi%</action>  %sep% %date% "
        }
