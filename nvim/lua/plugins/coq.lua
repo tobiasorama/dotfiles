@@ -30,4 +30,5 @@ return {
   config = function()
     -- Your LSP settings here
   end,
+  enabled = false,
 }
