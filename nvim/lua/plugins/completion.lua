@@ -5,7 +5,8 @@ return {
 
         cmp.setup({
             sources = {
-                { name = 'nvim_lsp' }
+                { name = 'nvim_lsp' },
+                { name = 'buffer' },
             },
             snippet = {
               -- REQUIRED - you must specify a snippet engine
