@@ -26,6 +26,26 @@ return { "neovim/nvim-lspconfig",
                 ['rust-analyzer'] = {},
             },
         }
+        lspconfig.hls.setup {
+            settings = {
+                ['hls'] = {},
+            },
+        }
+        lspconfig.clangd.setup {
+            settings = {
+                ['clangd'] = {},
+            },
+        }
+        lspconfig.pyright.setup {
+            settings = {
+                ['pyright'] = {},
+            },
+        }
+        lspconfig.lua_ls.setup {
+            settings = {
+                ['lua-language-server'] = {},
+            },
+        }
     end,
     enabled = true,
 }
