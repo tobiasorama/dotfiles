@@ -183,16 +183,6 @@ monocle =
             []
             (smartBorders Simplest)
             Full
-grid =
-  renamed [Replace "grid"] $
-    limitWindows 9 $
-      smartBorders $
-        windowNavigation $
-          addTabs shrinkText myTabTheme $
-            subLayout [] (smartBorders Simplest) $
-              mySpacing mySpacingValue $
-                mkToggle (single MIRROR) $
-                  Grid (16 / 10)
 tabs =
   renamed [Replace "tabs"]
   -- I cannot add spacing to this layout because it will
@@ -223,7 +213,6 @@ myLayoutHook =
     withBorder myBorderWidth tall
       ||| noBorders monocle
       ||| noBorders tabs
-      ||| grid
 
 myWorkspaces =
   [ " <fn=2>\xe795</fn>"
