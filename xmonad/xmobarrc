@@ -16,6 +16,7 @@
 --                       █                                    █             █                █              █                            
 --                        █                                    █             █                █              █                           
 --                         ██                                   ██            ██               ██             ██                         
+--
 
 Config { font            = "Fira Code Nerd Font Regular 11"
        , bgColor      = "#262b44" --"#1e1f2b"
@@ -33,12 +34,8 @@ Config { font            = "Fira Code Nerd Font Regular 11"
        , persistent   = True
        , iconRoot     = ".xmonad/xpm/"  -- default: "."
        , commands = [
-                        -- Echos a "penguin" icon in front of the kernel output.
-                      Run Com "echo" ["\xebc6"] "penguin" 3600
-                        -- Get kernel version (script found in .local/bin)
-                    , Run Com "uname" ["-r"] "kernel" 36000
                         -- Cpu usage in percent
-                    , Run Cpu ["-t", "\xec19 <total>%","-H","50","--high","red"] 20
+                      Run Cpu ["-t", "\xec19 <total>%","-H","50","--high","red"] 20
                         -- Ram used number and percent
                     , Run Memory ["-t", "\xf09d1 <usedratio>%"] 20
                         -- Disk space free
@@ -54,5 +51,5 @@ Config { font            = "Fira Code Nerd Font Regular 11"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }{  <action=`kitty -e htop`>%cpu%</action>  %sep%  <action=`kitty -e htop`>%memory%</action>  %sep%  %disku% %sep%  %default:Master%  %sep%  <action=`kitty -e nmcli`>%wifi%</action>  %sep% %date% "
+       , template = " %UnsafeStdinReader% }{  <action=`kitty -e htop`>%cpu%</action>  %sep%  <action=`kitty -e htop`>%memory%</action>  %sep%  %disku% %sep%  <action=`amixer -D pulse sset Master toggle` button=1><action=`amixer -D pulse sset Master 1311- unmute` button=4><action=`amixer -D pulse sset Master 1311+ unmute` button=5>%default:Master%</action></action></action> %sep%  <action=`kitty -e nmcli`>%wifi%</action>  %sep% %date% "
        }

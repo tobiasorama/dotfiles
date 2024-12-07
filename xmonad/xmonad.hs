@@ -364,10 +364,11 @@ myKeys c =
             , addName "Power Options" $
                 XMonad.Actions.TreeSelect.treeselectAction
                   powerOptionsDef
-                  [ Node (TSNode "Lock" "" (spawn "betterlockscreen -l")) []
+                  [ Node (TSNode "Lock" "" (spawn "i3lock -k --time-color=ffffff --date-color=ffffff --blur=1")) []
                   , Node (TSNode "Logout" "" (io exitSuccess)) []
-                  , Node (TSNode "Suspend" "" (spawn "betterlockscreen -l && sleep 2 && systemctl suspend")) []
+                  , Node (TSNode "Suspend" "" (spawn "i3lock -k --time-color=ffffff --date-color=ffffff --blur=1 && sleep 2 && systemctl suspend")) []
                   , Node (TSNode "Shutdown" "" (spawn "systemctl shutdown")) []
+                  , Node (TSNode "Reboot" "" (spawn "systemctl reboot now")) []
                   ]
             )
           ]
@@ -431,9 +432,9 @@ myKeys c =
         -- Multimedia Keys
         ^++^ subKeys
           "Multimedia keys"
-          [ ("M-<End>", addName "Toggle audio mute" $ spawn "amixer set Master toggle")
-          , ("M-<Page_Down>", addName "Lower vol" $ spawn "amixer set Master 5%- unmute")
-          , ("M-<Page_Up>", addName "Raise vol" $ spawn "amixer set Master 5%+ unmute")
+          [ ("<XF86AudioMute>", addName "Toggle audio mute" $ spawn "amixer set Master toggle")
+          , ("<XF86AudioLowerVolume>", addName "Lower vol" $ spawn "amixer set Master 5%- unmute")
+          , ("<XF86AudioRaiseVolume>", addName "Raise vol" $ spawn "amixer set Master 5%+ unmute")
           , ("M-S-p", addName "Flameshot" $ spawn "flameshot gui")
           ]
  where
