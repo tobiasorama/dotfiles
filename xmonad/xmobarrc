@@ -35,11 +35,11 @@ Config { font            = "Fira Code Nerd Font Regular 11"
        , iconRoot     = ".xmonad/xpm/"  -- default: "."
        , commands = [
                         -- Cpu usage in percent
-                      Run Cpu ["-t", "\xec19 <total>%","-H","50","--high","red"] 20
+                      Run Cpu ["-t", "\xf09d1 <total>%","-H","50","--high","red"] 20
                         -- Ram used number and percent
-                    , Run Memory ["-t", "\xf09d1 <usedratio>%"] 20
+                    , Run Memory ["-t", "\xf07f6 <usedratio>%"] 20
                         -- Disk space free
-                    , Run DiskU [("/", "\xe240  <free> ")] [] 60
+                    , Run DiskU [("/", "\xe240 1:  <free> "), ("/mnt/toern", "\xe240 2: <free> ")] [] 60
                     , Run Com "bash" ["-c", "if [ $(nmcli networking connectivity) = 'full' ]; then echo '\xf05a9'; else echo '\xf05aa'; fi"] "wifi" 10
                         -- Volume
                     , Run Volume "default" "Master" ["--template", "<status> <volume>%", "--", "--on", "\xf028 ", "--off", "\xeee8 ", "--onc", "white", "--offc", "grey"] 1
