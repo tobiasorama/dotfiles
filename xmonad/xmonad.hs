@@ -103,10 +103,10 @@ myModMask :: KeyMask
 myModMask = mod4Mask -- Sets modkey to super/windows key
 
 myTerminal :: String
-myTerminal = "kitty" -- Sets default terminal
+myTerminal = "alacritty" -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "qutebrowser"
+myBrowser = "firefox"
 myFileExplorer :: String
 myFileExplorer = "nemo"
 
@@ -114,10 +114,10 @@ myEditor :: String
 myEditor = myTerminal ++ " -e vim " -- Sets vim as editor
 
 myBorderWidth :: Dimension
-myBorderWidth = 2 -- Sets border width for windows
+myBorderWidth = 0 -- Sets border width for windows
 
 mySpacingValue :: Integer
-mySpacingValue = 8
+mySpacingValue = 0
 
 myNormColor :: String -- Border color of normal windows
 myNormColor = "#000000"
@@ -133,7 +133,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
-  spawn "picom --config ~/.config/picom/picom.conf &"
+  --spawn "picom --config ~/.config/picom/picom.conf &"
   spawnOnce "~/.fehbg &" -- set last saved feh wallpaper
   setWMName "xmonad"
   setDefaultCursor xC_left_ptr
@@ -471,7 +471,7 @@ main = do
         docks $
           def
             { manageHook = myManageHook <+> manageDocks
-            , handleEventHook = windowedFullscreenFixEventHook <> swallowEventHook (className =? "kitty" <||> className =? "st-256color" <||> className =? "XTerm") (return True) <> trayerPaddingXmobarEventHook
+            , handleEventHook = windowedFullscreenFixEventHook <> swallowEventHook (className =? myTerminal <||> className =? "st-256color" <||> className =? "XTerm") (return True) <> trayerPaddingXmobarEventHook
             , modMask = myModMask
             , terminal = myTerminal
             , startupHook = myStartupHook
