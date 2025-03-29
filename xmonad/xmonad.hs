@@ -406,6 +406,7 @@ myKeys c =
           , ("C-M1-h", addName "Decrease screen spacing" $ decScreenSpacing 4)
           , ("C-M1-l", addName "Increase screen spacing" $ incScreenSpacing 4)
           , ("C-M1-r", addName "Reset window spacing" $ setWindowSpacing $ myBorder mySpacingValue)
+          , ("C-M1-s", addName "Reset screen spacing" $ setScreenSpacing $ myBorder mySpacingValue)
           ]
         -- Increase/decrease windows in the master pane or the stack
         ^++^ subKeys
