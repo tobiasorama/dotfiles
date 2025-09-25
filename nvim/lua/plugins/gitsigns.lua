@@ -1,5 +1,11 @@
 return {
-    'lewis6991/gitsigns.nvim', opts = function()
+    'lewis6991/gitsigns.nvim', init = function()
+        vim.keymap.set('n', '<leader>Gn', ':Gitsigns next_hunk<cr>')
+        vim.keymap.set('n', '<leader>Gp', ':Gitsigns prev_hunk<cr>')
+        vim.keymap.set('n', '<leader>Gr', ':Gitsigns reset_hunk<cr>')
+        vim.keymap.set('n', '<leader>Gd', ':Gitsigns diffthis<cr>')
+    end,
+    opts = function()
     require("gitsigns").setup {
        signs = {
           add          = { text = '┃' },

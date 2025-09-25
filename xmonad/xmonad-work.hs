@@ -117,7 +117,7 @@ myBorderWidth :: Dimension
 myBorderWidth = 2 -- Sets border width for windows
 
 mySpacingValue :: Integer
-mySpacingValue = 8
+mySpacingValue = 0
 
 myNormColor :: String -- Border color of normal windows
 myNormColor = "#000000"

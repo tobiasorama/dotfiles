@@ -33,8 +33,9 @@ return { "neovim/nvim-lspconfig",
             },
         }
         lspconfig.clangd.setup {
-            settings = {
-                ['clangd'] = {},
+                cmd = {
+                'clangd',
+                '--query-driver=/home/tobias/repos/yocto/build-scarthgap/tmp-glibc/work/aarch64-appear-linux/xger/master-r1+git/recipe-sysroot-native/usr/bin/aarch64-appear-linux/aarch64-appear-linux-g++,/home/tobias/repos/yocto/build-kirkstone/tmp/work/aarch64-poky-linux/xger/master-r1-git999-r1/recipe-sysroot-native/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++,/home/tobias/repos/yocto/build-kirkstone/tmp/work/aarch64-poky-linux/maxipes/3.0.6+git999-r1/recipe-sysroot-native/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++,/home/tobias/repos/firewall/build-scarthgap/tmp-glibc/work/aarch64-appear-linux/xger/master+git/recipe-sysroot-native/usr/bin/aarch64-appear-linux/aarch64-appear-linux-g++',
             },
         }
         lspconfig.pyright.setup {
@@ -45,6 +46,12 @@ return { "neovim/nvim-lspconfig",
         lspconfig.lua_ls.setup {
             settings = {
                 ['lua-language-server'] = {},
+            },
+        }
+        lspconfig.ts_ls.setup {
+            cmd = {
+                'typescript-language-server',
+                '--stdio',
             },
         }
     end,
